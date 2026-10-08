@@ -7,6 +7,7 @@ import { FogWriting } from './components/FogWriting.js';
 import { InsightChit } from './components/InsightChit.js';
 import { BusPass } from './components/BusPass.js';
 import { buildLookAgain } from './components/Finale.js';
+import { track } from './analytics.js';
 import { DebugPanel } from './components/DebugPanel.js';
 import { InputManager } from './handTracking/InputManager.js';
 import { SceneRenderer } from './scenes/SceneRenderer.js';
@@ -91,8 +92,9 @@ const sm = new StateMachine({
     await wait(2800);
     texts.hush('title'); texts.hush('subtitle');
     await wait(500);
-    input.enableCamera();          // the browser asks for the camera while you read the pass
+    input.enableCamera().then(() => track('camera', { status: input.hand.status }));   // the browser asks for the camera while you read the pass
     await pass.show(true);
+    track('boarded');
     sm.go(S.AWAIT_HAND);
   },
   async [S.AWAIT_HAND]() {
@@ -100,7 +102,12 @@ const sm = new StateMachine({
     await wait(400);
     texts.say('hint', 'Move your hand.');
   },
-  [S.EXPLORING]() { here().glass.targetDensity = 0.16; opened.add(ACTIVE_SCENES[index].id); },
+  [S.EXPLORING]() {
+    here().glass.targetDensity = 0.16;
+    const id = ACTIVE_SCENES[index].id;
+    if (!opened.has(id)) track('blind-opened', { stop: id, n: index + 1 });
+    opened.add(id);
+  },
   [S.CLOSED]() { here().glass.targetDensity = 0.3; },
   async [S.FINALE]() {
     // last stop: step off, and watch the bus pull away under the blossom
@@ -108,6 +115,7 @@ const sm = new StateMachine({
     kit.writing.clear(); kit.chit.hide();
     visited.add(ACTIVE_SCENES[index].id);
     sound.ding();
+    track('finale', { windows: opened.size, tickets: tickets.size });
     const ext = street.exterior;
     ext.innerHTML = exteriorMarkup({ scenes: ACTIVE_SCENES, visited: opened, tickets, destination: ACTIVE_SCENES[ACTIVE_SCENES.length - 1].stop.kn });
     ext.style.display = '';
@@ -164,6 +172,7 @@ const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a
 async function rideTo(i) {
   const wasOpen = sm.is(S.EXPLORING);
   if (!sm.go(S.RIDING)) return;
+  track('ride', { to: ACTIVE_SCENES[i].id, dir: i > index ? 'next' : 'back' });
   texts.hushAll();
   kit.writing.clear(); kit.chit.hide();
   visited.add(ACTIVE_SCENES[index].id);
@@ -203,6 +212,7 @@ function nextWindow() {
 
 async function restart() {
   if (!sm.is(S.FINALE)) return;
+  track('look-again');
   lookAgain.hide();
   texts.hushAll();
   visited.clear();
@@ -244,6 +254,7 @@ input.on('secret', async () => {
   if (shown) {
     sound.secret();
     secretSeen = true; secretAt = performance.now();
+    if (!tickets.has(ACTIVE_SCENES[index].id)) track('ticket', { stop: ACTIVE_SCENES[index].id });
     tickets.add(ACTIVE_SCENES[index].id);
     texts.hush('hint');
   }
