@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+.DS_Store
+# Film songs are copyrighted: keep them on your own machine, don't publish them.
+assets/audio/*.mp3
+assets/audio/*.m4a
+assets/audio/*.wav

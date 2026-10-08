@@ -4,7 +4,7 @@
 
 You're sitting at the window of an old city bus. Hold your hand up to the webcam: move it to look around, pinch to lean in, and hold a 👍 to ring the bell and ride to the next stop. Each stop is one of the city's old eateries, from Malleshwaram down to Jayanagar.
 
-**▶ Live:** `https://<your-github-username>.github.io/windows-of-bengaluru/`  _(after you turn on GitHub Pages; see below)_
+**▶ Live:** https://lishaavijay2001-glitch.github.io/windows-of-bengaluru-/
 
 No webcam? The mouse and keyboard work too.
 
@@ -39,7 +39,7 @@ It's plain HTML, CSS and JavaScript, with no install needed.
 - Hand tracking uses [MediaPipe Hand Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker), loaded from a CDN, so it needs an internet connection.
 
 ### Publish with GitHub Pages
-Repository **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)` → Save.** After a minute the site is live at `https://<your-github-username>.github.io/windows-of-bengaluru/`.
+Repository **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)` → Save.** After a minute the site is live at `https://lishaavijay2001-glitch.github.io/windows-of-bengaluru-/`.
 
 ### Music
 Each stop plays its own little melody, synthesised live in the browser (no audio files), along with small sounds for each gesture: a chime, the conductor's bell, the engine, a whistle. **M** mutes.
