@@ -1,0 +1,26 @@
+THE WINDOWS OF BENGALURU — how to open
+
+SAFARI (Mac)
+  1. Double-click  "Start in Safari.command"
+  2. A small Terminal window opens and Safari opens the piece. Keep the Terminal window open while you play.
+  3. Click once anywhere to turn sound on. Allow the camera when Safari asks.
+
+  If macOS says the file "can't be opened" or is from an unidentified developer:
+    • Right-click "Start in Safari.command" → Open → Open.
+    • Newer macOS (Sequoia): System Settings → Privacy & Security → scroll down → "Open Anyway".
+    • Or skip that entirely: open Terminal, type   bash   and a space, drag "Start in Safari.command"
+      into the Terminal window, press Enter.
+
+CHROME / FIREFOX / DEFAULT BROWSER (Mac)
+  Double-click "Start (Mac).command". Same steps as above.
+
+WINDOWS
+  Double-click "Start (Windows).bat".
+
+WHY A "START" FILE?
+  Safari only allows the webcam on a web address, not on a file you double-click. The Start file serves
+  the folder at http://localhost:5173 on your own computer. Nothing goes online.
+  (Opening windows-of-bengaluru.html directly also works in Chrome, music included. Safari won't give it the webcam.)
+
+NEEDS: Safari 15 or newer, an internet connection (for the hand-tracking model and fonts),
+and this whole folder kept together. Songs are not included: see assets/audio/README.txt.
